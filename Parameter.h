@@ -15,7 +15,7 @@
 
 #define SensorNum 10 //センサーの数
 
-#define DeltaTx_P 0.05 //電力制御時に下げる
+#define DeltaTx_P 0.1 //電力制御時に下げる
 
 //#define Tx_P 30.0			/* 送信電力[dBm] */
 #define Pout 0.01			/* アウテージ確率 */
@@ -39,7 +39,7 @@
 #define PI			 3.141592653589793
 #define loop		 1000
 
-#define SNR			 20.0		 /* 所望SNR */
+#define SNR			 30.0		 /* 所望SNR */
 #define Boltzmann	 1.38064852  /*ボルツマン定数 10^(-23)なし */
 #define Kelvin		 293.15		 /* 導体の温度 20℃ */
 #define FB			 100.0		 /* 周波数帯域幅 100MHz 10^(6)なし */

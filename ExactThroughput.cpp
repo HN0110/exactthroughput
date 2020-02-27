@@ -1,6 +1,5 @@
 /*************
-
-c++ -o Main Main.cpp UserDefFunc.cpp -std=c++0x -g
+g++ -o Main Main.cpp UserDefFunc.cpp -std=c++0x -g
 ***********/
 
 
@@ -46,7 +45,7 @@ int main()
 
 
     //スループットが最大の場合のグラフ導出
-
+    /*
     int i;
     double c_max = 0.0, c, cf, snr, B, noise_mw, noise_db, wavelength, rx;
 
@@ -83,12 +82,16 @@ int main()
             cout<< tmp << endl;
         }
     }
+    */
 
     //------------------------------------------------------------------------------------------------------------------------------------------------------------
     //電力制御なし・帯域分割なしの周波数共用可能かの判定
 
-	int j, k, l, m, n, x, y, z;
+	int i, j, k, l, m, n, x, y, z;
 	int o = 0;
+
+    double wavelength = 0.0;
+    double cf = 0.0;
 
 	int num1, num2;
 	double* pT;
@@ -108,21 +111,7 @@ int main()
 
 	InterferenceWorstPoint WorstPoint[SmallNum];
 
-
 	Grid Grid[GridNum][GridNum];
-
-	//スモールセルの基地局位置
-
-	//SmallCell[0].x = 125.0;
-	//SmallCell[0].y = 125.0;
-
-	//SmallCell[1].x = 125.0;
-	//SmallCell[1].y = 285.0;
-
-	//SmallCell[2].x = 255.0;
-	//SmallCell[2].y = 285.0;
-
-
 
 	//送信電力の制御
 	double Tx_P[SmallNum];
@@ -287,10 +276,6 @@ int main()
     int OUTAGE = 0;
     double c_sum_dp = 0.0; //spectrumbanddivideallocationとpowercontrol両方使った場合の合計スループット
 
-
-    OUTAGE = Pout * loop * SensorNum - 1;
-    cout << "OUTAGE," << OUTAGE << endl;
-
 	//初期設定---------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//セルの設定
 	for (i = 0; i < SmallNum; i++)
@@ -302,7 +287,7 @@ int main()
 
         writing_file1 << setprecision(20) << "cellx," << SmallCell[i].x << ",celly," << SmallCell[i].y << endl;
 	}
-
+    /*
     SmallCell[0].x = 234.7835635;
     SmallCell[0].y = 77.2975318;
 
@@ -311,13 +296,14 @@ int main()
 
     SmallCell[2].x = 884.5234791;
     SmallCell[2].y = 785.4373726;
-/*
+
     SmallCell[3].x = 884.5234791;
     SmallCell[3].y = 785.4373726;
 
     SmallCell[4].x = 787.345887;
     SmallCell[4].y = 459.865465;
-*/
+    */
+
 	for (i = 0; i < SmallNum; i++)
 	{
         writing_file1 << setprecision(20) << "saihaichi,cellx," << SmallCell[i].x << ",celly," << SmallCell[i].y << endl;
@@ -328,6 +314,10 @@ int main()
     {
         SmallCellRadius[i] = InitialSmallCellRadius;
     }
+
+    //アウテージの初期設定
+    OUTAGE = Pout * loop * SensorNum - 1;
+    cout << "OUTAGE," << OUTAGE << endl;
 
     //雑音電力
     Noise_dBm = -95.0;
@@ -347,7 +337,6 @@ int main()
         InitialTx_P = Tx_P[i];
         writing_file1 << "SmallCellRadius," << SmallCellRadius[i] << endl;
         writing_file1 << "Tx_P," << i << "," << Tx_P[i] << endl;
-
     }
 
     //干渉到達エリアの半径決め
@@ -1262,7 +1251,7 @@ int main()
 
                 for (k = 0; k < SmallNum; k++)
                 {
-                    //cout << SmallCell[k].Throughput / pow(10.0, 6.0) << endl;
+                    cout << SmallCell[k].Throughput / pow(10.0, 6.0) << endl;
                     if ((SmallCell[k].Throughput / pow(10.0, 6.0)) < 10)
                     {
                         //cout << "lower than 10Mpbs" << endl;
@@ -1420,7 +1409,7 @@ int main()
         //{
             //全帯域で割り当てられなかったセルの帯域割り当て
             //i番目のセルがf1で，他のセルがf2だった時に共用の可否・スループットがどうなるか
-
+            /*
             for (z = 0; z < SmallNum; z++)
             {
                 writing_file1 << "\n\nThroughput_\n\n" << endl;
@@ -2055,7 +2044,7 @@ int main()
                                         }
                                     }
 
-                                /*
+                                \*
                                     for (i = 0; i < SmallNum; i++)
                                     {
                                         pout_nonpc[i] = (double)SpectrumSharingImpossible_nonpc[i] / (double)(loop * SensorNum);
@@ -2488,7 +2477,7 @@ int main()
                                             CellAveInter[i][j] = InitialCellAveInter[i][j];
                                         }
                                     }
-                                */
+
 
                                 }
 
@@ -2598,6 +2587,7 @@ int main()
             c_sum = 0.0;
             numf[0] = numf[1] = numcf = 0;
         }
+*/
     }
     else
     {
