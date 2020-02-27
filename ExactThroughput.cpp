@@ -319,19 +319,29 @@ int main()
     OUTAGE = Pout * loop * SensorNum - 1;
     cout << "OUTAGE," << OUTAGE << endl;
 
-    //雑音電力
-    Noise_dBm = -95.0;
-	Noise_mW = pow(10, Noise_dBm / 10.0);
+    //全帯域幅，波長の計算
+    cf = (BAND_MAX * pow(10.0, 9.0) + BAND_MIN * pow(10.0, 9.0)) / 2.0;
+    wavelength = 3.0 * pow(10.0, 8.0) / cf;
 
-    //cf = (BAND_MAX * pow(10.0, 9.0) + BAND_MIN * pow(10.0, 9.0)) / 2.0;
-    //cf = 4625000000;
-    //wavelength = 3.0 * pow(10.0, 8.0) / cf;
+    cout << cf << "," << wavelength << endl;
+
+    //雑音電力
+    //300ケルビン=26.85度の熱雑音
+    Noise_dBm = -174 + 10 * log10(BAND_MAX * pow(10, 9) - BAND_MIN * pow(10, 9));
+    cout << Noise_dBm << endl;
+	Noise_mW = pow(10, Noise_dBm / 10.0);
 
     //各スモールセルの初期送信電力決め
     for (i = 0; i < SmallNum; i++)
     {
-        Tx_P[i] = SNR + Pathloss(SmallCellRadius[i], wavelength) + Noise_dBm;
+        //前の送信電力の決定法
+        //Tx_P[i] = SNR + Pathloss(SmallCellRadius[i], wavelength) + Noise_dBm;
+
+        //5Gで決められている送信電力の決定法
+        Tx_P[i] = 10 * log10(pow(10.0, 25.0 / 10.0) * (BAND_MAX * pow(10, 9) - BAND_MIN * pow(10, 9)) / pow(10, 6));
 		SmallCellRadius[i] = RefDistance * pow(10.0, (Tx_P[i] - Noise_dBm - SNR - 20 * log10(4 * PI * RefDistance / wavelength))/ (RefDistance * PathlossExponent));
+
+        cout << Tx_P[i] << "," << SmallCellRadius[i] << endl;
 
         //初期送信電力をとっておく
         InitialTx_P = Tx_P[i];
@@ -408,7 +418,6 @@ int main()
                 //cout << "InterferenceArrivalArea" << j << "\n";
                 writing_file1 << "InterferenxeSinalArea_naino_smallcell," << j << ",SmallCell[i].InterferenceArrivalAreaFlag[j]," << SmallCell[i].InterferenceArrivalAreaFlag[j] << endl;
                 //cout << SmallCell[i].InterferenceArrivalAreaFlag[j] << "\n";
-
             }
         }
 
